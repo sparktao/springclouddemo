@@ -1,0 +1,40 @@
+[2m2019-12-30 15:06:00.267[0;39m [31mERROR [,,,][0;39m [35m14676[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.s.boot.SpringApplication              [0;39m [2m:[0;39m Application run failed
+
+java.lang.IllegalStateException: java.lang.IllegalStateException: Logback configuration error detected: 
+ERROR in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Could not create component [encoder] of type [net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder] java.lang.ClassNotFoundException: net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder
+ERROR in ch.qos.logback.core.joran.spi.Interpreter@46:24 - no applicable action for [providers], current ElementPath  is [[configuration][appender][encoder][providers]]
+ERROR in ch.qos.logback.core.joran.spi.Interpreter@47:28 - no applicable action for [timestamp], current ElementPath  is [[configuration][appender][encoder][providers][timestamp]]
+ERROR in ch.qos.logback.core.joran.spi.Interpreter@48:31 - no applicable action for [timeZone], current ElementPath  is [[configuration][appender][encoder][providers][timestamp][timeZone]]
+ERROR in ch.qos.logback.core.joran.spi.Interpreter@50:26 - no applicable action for [pattern], current ElementPath  is [[configuration][appender][encoder][providers][pattern]]
+ERROR in ch.qos.logback.core.joran.spi.Interpreter@51:30 - no applicable action for [pattern], current ElementPath  is [[configuration][appender][encoder][providers][pattern][pattern]]
+ERROR in ch.qos.logback.core.rolling.RollingFileAppender[logstash] - No encoder set for the appender named "logstash".
+	at org.springframework.boot.context.logging.LoggingApplicationListener.initializeSystem(LoggingApplicationListener.java:324)
+	at org.springframework.boot.context.logging.LoggingApplicationListener.initialize(LoggingApplicationListener.java:288)
+	at org.springframework.boot.context.logging.LoggingApplicationListener.onApplicationEnvironmentPreparedEvent(LoggingApplicationListener.java:246)
+	at org.springframework.boot.context.logging.LoggingApplicationListener.onApplicationEvent(LoggingApplicationListener.java:223)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.doInvokeListener(SimpleApplicationEventMulticaster.java:172)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.invokeListener(SimpleApplicationEventMulticaster.java:165)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:139)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:127)
+	at org.springframework.boot.context.event.EventPublishingRunListener.environmentPrepared(EventPublishingRunListener.java:76)
+	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:53)
+	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:345)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:308)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at com.tao.productservice.ProductServiceApplication.main(ProductServiceApplication.java:12)
+Caused by: java.lang.IllegalStateException: Logback configuration error detected: 
+ERROR in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Could not create component [encoder] of type [net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder] java.lang.ClassNotFoundException: net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder
+ERROR in ch.qos.logback.core.joran.spi.Interpreter@46:24 - no applicable action for [providers], current ElementPath  is [[configuration][appender][encoder][providers]]
+ERROR in ch.qos.logback.core.joran.spi.Interpreter@47:28 - no applicable action for [timestamp], current ElementPath  is [[configuration][appender][encoder][providers][timestamp]]
+ERROR in ch.qos.logback.core.joran.spi.Interpreter@48:31 - no applicable action for [timeZone], current ElementPath  is [[configuration][appender][encoder][providers][timestamp][timeZone]]
+ERROR in ch.qos.logback.core.joran.spi.Interpreter@50:26 - no applicable action for [pattern], current ElementPath  is [[configuration][appender][encoder][providers][pattern]]
+ERROR in ch.qos.logback.core.joran.spi.Interpreter@51:30 - no applicable action for [pattern], current ElementPath  is [[configuration][appender][encoder][providers][pattern][pattern]]
+ERROR in ch.qos.logback.core.rolling.RollingFileAppender[logstash] - No encoder set for the appender named "logstash".
+	at org.springframework.boot.logging.logback.LogbackLoggingSystem.loadConfiguration(LogbackLoggingSystem.java:169)
+	at org.springframework.boot.logging.AbstractLoggingSystem.initializeWithSpecificConfig(AbstractLoggingSystem.java:66)
+	at org.springframework.boot.logging.AbstractLoggingSystem.initialize(AbstractLoggingSystem.java:57)
+	at org.springframework.boot.logging.logback.LogbackLoggingSystem.initialize(LogbackLoggingSystem.java:118)
+	at org.springframework.boot.context.logging.LoggingApplicationListener.initializeSystem(LoggingApplicationListener.java:318)
+	... 14 common frames omitted
+

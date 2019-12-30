@@ -1,0 +1,71 @@
+spring:
+  application:
+    name: zuulservice
+server:
+  port: 5555
+
+eureka:
+  instance:
+    instance-id: ${eureka.instance.ip-address}:${server.port}
+    prefer-ip-address: true
+    ip-address: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+zuul:
+  #To force the original encoding of the query string
+  forceOriginalQueryStringEncoding: true
+  routes:
+    orderservice:
+      path: /order/**
+      serviceId: orderservice
+      retryable: true
+    productservice:
+      path: /product/**
+      serviceId: productservice
+  retryable: true
+
+#use Ribbon without Eureka
+#Ribbon API can determine the server's availability through the constant pinging of servers at regular intervals and has a capability of skipping the servers which are not live.
+ribbon:
+  eureka:
+    enabled: false
+
+# 这里对应的是微服务的ServerId值
+orderservice:
+  ribbon:
+    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+    # Initial list of servers, can be changed via Archaius dynamic property at runtime
+    listOfServers: localhost:8091,localhost:8092
+    retryableStatusCodes: 500
+    #对当前实例的重试次数
+    MaxAutoRetries: 1
+    #切换实例的重试次数
+    MaxAutoRetriesNextServer: 1
+    #对所有操作请求都进行重试
+    OkToRetryOnAllOperations: true
+    #请求处理的时间，默认1秒
+    ReadTimeout: 3000
+    #请求连接的超时时间,缺省1秒
+    ConnectTimeout: 1000
+    MaxTotalHttpConnections: 500
+    MaxConnectionsPerHost: 100
+productservice:
+  ribbon:
+    listOfServers: localhost:8081
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 40000
+
+
+#http://127.0.0.1:5555/actuator/routes
+management:
+  endpoints:
+    web:
+      exposure:
+        include: routes

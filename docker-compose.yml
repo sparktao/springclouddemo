@@ -1,0 +1,28 @@
+version: '3'
+services:
+  eureka:
+    build: ./eureka
+    ports:
+      - "8761:8761"
+  zipkin:
+    image:  openzipkin/zipkin
+    ports:
+      - "9411:9411"
+  product:
+    build: ./product
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka
+  order:
+    build: ./order
+    ports:
+      - "8091:8091"
+    depends_on:
+      - eureka
+  zuul:
+    build: ./zuul
+    ports:
+      - "5555:5555"
+    depends_on:
+      - eureka
