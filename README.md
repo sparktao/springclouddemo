@@ -5,6 +5,7 @@
 3. 添加zuul API网关，注册order和product 服务
 4. 添加Slueth 监控支持，同时docker-compose.yml中加入zipkin可视化工具查看监控
 5. docker 部署支持,添加docker-compose.yml和每个工程的Dockfile
+6. order引入了申明式Feign调用Product方法
 
 启动
 docker-compose up

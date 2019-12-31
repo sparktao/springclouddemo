@@ -35,3 +35,17 @@ hystrix:
           enabled: true
   metrics:
     enabled: true
+  threadpool:
+    productservice:
+      coreSize: 10
+      maxQueueSize: 20
+
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic

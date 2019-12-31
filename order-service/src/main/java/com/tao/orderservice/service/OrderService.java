@@ -1,6 +1,6 @@
 package com.tao.orderservice.service;
 
-import com.tao.orderservice.client.ProductClientBulkhead;
+import com.tao.orderservice.client.ProductClient;
 import com.tao.orderservice.model.Order;
 import com.tao.orderservice.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import java.util.Date;
 public class OrderService {
 
     @Autowired
-    private ProductClientBulkhead productClient;
+    private ProductClient productClient;
 
     public Order addOrder(String productCode) {
         Order order = new Order();

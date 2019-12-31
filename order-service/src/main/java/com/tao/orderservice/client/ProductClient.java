@@ -1,18 +1,13 @@
 package com.tao.orderservice.client;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.tao.orderservice.model.Product;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-@Service
-public class ProductClient {
+@FeignClient(name = "productservice", fallback =  ProductClientFallback.class)
+public interface ProductClient {
 
-    @Autowired
-    RestTemplate restTemplate;
 
     /**
      * 正常服务
@@ -20,12 +15,8 @@ public class ProductClient {
      * @param productCode
      * @return
      */
-    public Product getProduct(String productCode) {
-        ResponseEntity<Product> result =
-                restTemplate.postForEntity("http://productservice/v1/product/getProduct", productCode, Product.class);
-
-        return result.getBody();
-    }
+    @RequestMapping(method = RequestMethod.POST, value = "/v1/product/getProduct")
+    Product getProduct(String productCode);
 
     /**
      * 服务过期
@@ -33,17 +24,8 @@ public class ProductClient {
      * @param productCode
      * @return
      */
-    @HystrixCommand(
-            commandProperties = {
-                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "2000")
-            }
-    )
-    public Product getProductTimeout(String productCode) {
-        ResponseEntity<Product> result =
-                restTemplate.postForEntity("http://productservice/v1/product/getProductTimeout", productCode, Product.class);
-
-        return result.getBody();
-    }
+    @RequestMapping(method = RequestMethod.POST, value = "/v1/product/getProductTimeout")
+    Product getProductTimeout(String productCode);
 
     /**
      * 调用服务异常，选择备用方案
@@ -51,19 +33,7 @@ public class ProductClient {
      * @param productCode
      * @return
      */
-    @HystrixCommand(fallbackMethod = "getProductFallback0")
-    public Product getProductFallback(String productCode) {
-        ResponseEntity<Product> result =
-                restTemplate.postForEntity("http://productservice/v1/product/getProductFallback", productCode, Product.class);
+    @RequestMapping(method = RequestMethod.POST, value = "/v1/product/getProductFallback")
+    Product getProductFallback(String productCode);
 
-        return result.getBody();
-    }
-
-    public Product getProductFallback0(String productCode) {
-        Product product = new Product();
-        product.setId(2l);
-        product.setProductName("备用产品");
-
-        return product;
-    }
 }
