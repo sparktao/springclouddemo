@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: gatewayservice
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+      - id: eventservice
+        uri: lb://eventservice
+        predicates:
+        - Path=/event/**
+        filters:
+          - StripPrefix=1
+      - id: orderservice
+        uri: lb://orderservice
+        predicates:
+        - Path=/order/**
+        filters:
+          - StripPrefix=1
+      - id: productservice
+        uri: lb://productservice
+        predicates:
+        - Path=/product/**
+        filters:
+          - StripPrefix=1
+
+eureka:
+  instance:
+    instance-id: ${server.host}:${server.port}
+    preferIpAddress: true
+    ipAddress: ${server.host}
+    leaseRenewalIntervalInSeconds: 30
+    leaseExpirationDurationInSeconds: 90
+  client:
+    service-url:
+      defaultZone: http://${eureka.host}:8761/eureka/
+logging:
+  level:
+#    org.springframework.cloud.gateway: trace
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway

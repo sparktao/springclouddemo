@@ -1,0 +1,7 @@
+/build
+/gateway-service/.mvn
+/event-service/.mvn
+/eureka-service/.mvn
+/order-service/.mvn
+/product-service/.mvn
+.idea
