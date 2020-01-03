@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.hexagonsi.event.dao.OdAgencyEventStatMapper" >
+  <resultMap id="BaseResultMap" type="org.hexagonsi.event.model.OdAgencyEventStat" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="dayofweek" property="dayOfWeek" jdbcType="VARCHAR" />
+    <result column="hourofday" property="hourOfDay" jdbcType="VARCHAR" />
+    <result column="count" property="Count" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    dayofweek, hourofday, count
+  </sql>
+  <select id="getStatsByDayAndHour" resultMap="BaseResultMap">
+    select t.dayofweek, t.hourofday, count(1) as count from
+    (select date_format(createdtime, '%W') as dayofweek, date_format(createdtime, '%H') as hourofday from od_agencyevent) t
+    group by t.dayofweek, t.hourofday
+    order by FIELD(t.dayofweek, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'), t.hourofday
+  </select>
+
+</mapper>

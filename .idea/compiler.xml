@@ -8,13 +8,15 @@
         <outputRelativeToContentRoot value="true" />
         <module name="product-service" />
         <module name="order-service" />
+        <module name="zuul-service" />
         <module name="sleuth" />
         <module name="eureka-service" />
-        <module name="zuul-service" />
+        <module name="event-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="eureka-service" target="1.8" />
+      <module name="event-service" target="1.8" />
       <module name="order-service" target="1.8" />
       <module name="product-service" target="1.8" />
       <module name="sleuth" target="1.8" />
@@ -25,6 +27,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="eureka-service" options="-parameters" />
+      <module name="event-service" options="-parameters" />
       <module name="order-service" options="-parameters" />
       <module name="product-service" options="-parameters" />
       <module name="sleuth" options="-parameters" />

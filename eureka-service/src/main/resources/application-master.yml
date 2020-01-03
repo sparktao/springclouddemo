@@ -2,10 +2,10 @@ spring:
   application:
     name: eureka-server
 server:
-  port: 8761
+  port: ${server.port}
 eureka:
   instance:
-    hostname: localhost
+    hostname: ${eureka.host}
   client:
     #    serviceUrl:
     #      defaultZone: http://peer2:8762/eureka/

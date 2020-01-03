@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.hexagonsi.event.dao.OdAgencyEventHisMapper" >
+  <resultMap id="BaseResultMap" type="org.hexagonsi.event.model.OdAgencyEventHis" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="agencyeventid" property="agencyeventid" jdbcType="VARCHAR" />
+    <result column="createdtime" property="createdtime" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, agencyeventid, createdtime, type, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from od_agencyevent_his
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByAgencyEventId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from od_agencyevent_his
+    where agencyeventid = #{agencyeventid,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from od_agencyevent_his
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.hexagonsi.event.model.OdAgencyEventHis" >
+    insert into od_agencyevent_his (id, agencyeventid, createdtime, 
+      type, remark)
+    values (#{id,jdbcType=INTEGER}, #{agencyeventid,jdbcType=VARCHAR}, #{createdtime,jdbcType=TIMESTAMP}, 
+      #{type,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.hexagonsi.event.model.OdAgencyEventHis" >
+    insert into od_agencyevent_his
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="agencyeventid != null" >
+        agencyeventid,
+      </if>
+      <if test="createdtime != null" >
+        createdtime,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="agencyeventid != null" >
+        #{agencyeventid,jdbcType=VARCHAR},
+      </if>
+      <if test="createdtime != null" >
+        #{createdtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.hexagonsi.event.model.OdAgencyEventHis" >
+    update od_agencyevent_his
+    <set >
+      <if test="agencyeventid != null" >
+        agencyeventid = #{agencyeventid,jdbcType=VARCHAR},
+      </if>
+      <if test="createdtime != null" >
+        createdtime = #{createdtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.hexagonsi.event.model.OdAgencyEventHis" >
+    update od_agencyevent_his
+    set agencyeventid = #{agencyeventid,jdbcType=VARCHAR},
+      createdtime = #{createdtime,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

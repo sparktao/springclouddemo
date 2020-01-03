@@ -1,19 +1,17 @@
 spring:
   application:
     name: zuulservice
-  zipkin:
-    baseUrl: http://localhost:9411
-server:
-  port: 5555
+#  zipkin:
+#    baseUrl: http://localhost:9411
 
 eureka:
   instance:
-    instance-id: ${eureka.instance.ip-address}:${server.port}
+    instance-id: ${server.host}:${server.port}
     prefer-ip-address: true
-    ip-address: localhost
+    ip-address: ${server.host}
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://${eureka.host}:8761/eureka/
 zuul:
   #To force the original encoding of the query string
   forceOriginalQueryStringEncoding: true
@@ -22,6 +20,8 @@ zuul:
       path: /order/**
     productservice:
       path: /product/**
+    eventservice:
+      path: /event/**
   retryable: true
 
 
@@ -33,6 +33,11 @@ ribbon:
   #对所有操作请求都进行重试
   OkToRetryOnAllOperations: true
   #请求处理的时间，默认1秒
-  ReadTimeout: 3000
+  ReadTimeout: 5000
   #请求连接的超时时间,缺省1秒
-  ConnectTimeout: 1000
+  ConnectTimeout: 3000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: routes

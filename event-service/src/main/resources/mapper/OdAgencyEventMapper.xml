@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.hexagonsi.event.dao.OdAgencyEventMapper" >
+  <resultMap id="BaseResultMap" type="org.hexagonsi.event.model.OdAgencyEvent" >
+    <id column="agencyeventid" property="agencyeventid" jdbcType="VARCHAR" />
+    <result column="agencyeventdesc" property="agencyeventdesc" jdbcType="VARCHAR" />
+    <result column="agencyeventsubtypecode" property="agencyeventsubtypecode" jdbcType="VARCHAR" />
+    <result column="agencyeventsubtypecodedesc" property="agencyeventsubtypecodedesc" jdbcType="VARCHAR" />
+    <result column="agencyeventtypecode" property="agencyeventtypecode" jdbcType="VARCHAR" />
+    <result column="agencyeventtypecodedesc" property="agencyeventtypecodedesc" jdbcType="VARCHAR" />
+    <result column="agencyId" property="agencyid" jdbcType="VARCHAR" />
+    <result column="addedtime" property="addedtime" jdbcType="TIMESTAMP" />
+    <result column="alarmlevel" property="alarmlevel" jdbcType="INTEGER" />
+    <result column="latitude" property="latitude" jdbcType="DOUBLE" />
+    <result column="longitude" property="longitude" jdbcType="DOUBLE" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="createdtime" property="createdtime" jdbcType="TIMESTAMP" />
+    <result column="createdterminal" property="createdterminal" jdbcType="VARCHAR" />
+    <result column="updatedtime" property="updatedtime" jdbcType="TIMESTAMP" />
+    <result column="updatedterminal" property="updatedterminal" jdbcType="VARCHAR" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="closingterminal" property="closingterminal" jdbcType="VARCHAR" />
+    <result column="dispatchgroup" property="dispatchgroup" jdbcType="VARCHAR" />
+    <result column="callername" property="callername" jdbcType="VARCHAR" />
+    <result column="callerphone" property="callerphone" jdbcType="VARCHAR" />
+    <result column="dispatchvehicles" property="dispatchvehicles" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    agencyeventid, agencyeventdesc, agencyeventsubtypecode, agencyeventsubtypecodedesc, 
+    agencyeventtypecode, agencyeventtypecodedesc, agencyId, addedtime, alarmlevel, latitude, 
+    longitude, location, createdtime, createdterminal, updatedtime, updatedterminal, 
+    closetime, closingterminal, dispatchgroup, callername, callerphone, dispatchvehicles
+  </sql>
+  <select id="selectConditionalEvents" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from od_agencyevent ae
+    where 1=1
+    <if test="eventdesc != null" >
+      <bind name="pattern" value="'%' + eventdesc + '%'" />
+      AND ae.agencyeventdesc like #{pattern}
+    </if>
+  </select>
+  <select id="countByAgencyIdAndCreatedTimeBetween" resultType="int">
+    select count(*)
+    from od_agencyevent ae
+    where 1=1
+    <if test="agencyid != null" >
+      AND ae.agencyid = #{agencyid,jdbcType=VARCHAR}
+    </if>
+    <if test="startCreatedtime != null" >
+      and ae.createdtime &gt;= #{startCreatedtime}
+    </if>
+    <if test="endCreatedtime != null" >
+      and ae.createdtime &lt;= #{endCreatedtime}
+    </if>
+  </select>
+  <select id="findDGroupSummary" resultType="org.hexagonsi.event.model.DGroupSummary">
+    select ae.dispatchgroup as dispatchGroup, ae.alarmlevel as alarmlevel, sum(1) as sum
+    from od_agencyevent ae
+    where 1=1
+    <if test="startCreatedtime != null" >
+      and ae.createdtime &gt;= #{startCreatedtime}
+    </if>
+    <if test="endCreatedtime != null" >
+      and ae.createdtime &lt;= #{endCreatedtime}
+    </if>
+    group by ae.dispatchGroup, ae.alarmlevel
+    order by ae.dispatchGroup, ae.alarmlevel
+  </select>
+  <select id="findEventTypeSummary" resultType="org.hexagonsi.event.model.SeriesData">
+    select ae.agencyeventtypecode as name, sum(1) as value
+    from od_agencyevent ae
+    where 1=1
+    <if test="startCreatedtime != null" >
+      and ae.createdtime &gt;= #{startCreatedtime}
+    </if>
+    <if test="endCreatedtime != null" >
+      and ae.createdtime &lt;= #{endCreatedtime}
+    </if>
+    group by ae.agencyeventtypecode
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from od_agencyevent t order by t.createdtime desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from od_agencyevent
+    where agencyeventid = #{agencyeventid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from od_agencyevent
+    where agencyeventid = #{agencyeventid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="org.hexagonsi.event.model.OdAgencyEvent" >
+    insert into od_agencyevent (agencyeventid, agencyeventdesc, agencyeventsubtypecode, 
+      agencyeventsubtypecodedesc, agencyeventtypecode, 
+      agencyeventtypecodedesc, agencyId, addedtime, 
+      alarmlevel, latitude, longitude, 
+      location, createdtime, createdterminal, 
+      updatedtime, updatedterminal, closetime, 
+      closingterminal, dispatchgroup, callername, 
+      callerphone, dispatchvehicles)
+    values (#{agencyeventid,jdbcType=VARCHAR}, #{agencyeventdesc,jdbcType=VARCHAR}, #{agencyeventsubtypecode,jdbcType=VARCHAR}, 
+      #{agencyeventsubtypecodedesc,jdbcType=VARCHAR}, #{agencyeventtypecode,jdbcType=VARCHAR}, 
+      #{agencyeventtypecodedesc,jdbcType=VARCHAR}, #{agencyid,jdbcType=VARCHAR}, #{addedtime,jdbcType=TIMESTAMP}, 
+      #{alarmlevel,jdbcType=INTEGER}, #{latitude,jdbcType=DOUBLE}, #{longitude,jdbcType=DOUBLE},
+      #{location,jdbcType=VARCHAR}, #{createdtime,jdbcType=TIMESTAMP}, #{createdterminal,jdbcType=VARCHAR}, 
+      #{updatedtime,jdbcType=TIMESTAMP}, #{updatedterminal,jdbcType=VARCHAR}, #{closetime,jdbcType=TIMESTAMP}, 
+      #{closingterminal,jdbcType=VARCHAR}, #{dispatchgroup,jdbcType=VARCHAR}, #{callername,jdbcType=VARCHAR}, 
+      #{callerphone,jdbcType=VARCHAR}, #{dispatchvehicles,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.hexagonsi.event.model.OdAgencyEvent" >
+    insert into od_agencyevent
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="agencyeventid != null" >
+        agencyeventid,
+      </if>
+      <if test="agencyeventdesc != null" >
+        agencyeventdesc,
+      </if>
+      <if test="agencyeventsubtypecode != null" >
+        agencyeventsubtypecode,
+      </if>
+      <if test="agencyeventsubtypecodedesc != null" >
+        agencyeventsubtypecodedesc,
+      </if>
+      <if test="agencyeventtypecode != null" >
+        agencyeventtypecode,
+      </if>
+      <if test="agencyeventtypecodedesc != null" >
+        agencyeventtypecodedesc,
+      </if>
+      <if test="agencyid != null" >
+        agencyId,
+      </if>
+      <if test="addedtime != null" >
+        addedtime,
+      </if>
+      <if test="alarmlevel != null" >
+        alarmlevel,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+      <if test="longitude != null" >
+        longitude,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="createdtime != null" >
+        createdtime,
+      </if>
+      <if test="createdterminal != null" >
+        createdterminal,
+      </if>
+      <if test="updatedtime != null" >
+        updatedtime,
+      </if>
+      <if test="updatedterminal != null" >
+        updatedterminal,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="closingterminal != null" >
+        closingterminal,
+      </if>
+      <if test="dispatchgroup != null" >
+        dispatchgroup,
+      </if>
+      <if test="callername != null" >
+        callername,
+      </if>
+      <if test="callerphone != null" >
+        callerphone,
+      </if>
+      <if test="dispatchvehicles != null" >
+        dispatchvehicles,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="agencyeventid != null" >
+        #{agencyeventid,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyeventdesc != null" >
+        #{agencyeventdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyeventsubtypecode != null" >
+        #{agencyeventsubtypecode,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyeventsubtypecodedesc != null" >
+        #{agencyeventsubtypecodedesc,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyeventtypecode != null" >
+        #{agencyeventtypecode,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyeventtypecodedesc != null" >
+        #{agencyeventtypecodedesc,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyid != null" >
+        #{agencyid,jdbcType=VARCHAR},
+      </if>
+      <if test="addedtime != null" >
+        #{addedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alarmlevel != null" >
+        #{alarmlevel,jdbcType=INTEGER},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="createdtime != null" >
+        #{createdtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdterminal != null" >
+        #{createdterminal,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedtime != null" >
+        #{updatedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedterminal != null" >
+        #{updatedterminal,jdbcType=VARCHAR},
+      </if>
+      <if test="closetime != null" >
+        #{closetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closingterminal != null" >
+        #{closingterminal,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchgroup != null" >
+        #{dispatchgroup,jdbcType=VARCHAR},
+      </if>
+      <if test="callername != null" >
+        #{callername,jdbcType=VARCHAR},
+      </if>
+      <if test="callerphone != null" >
+        #{callerphone,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchvehicles != null" >
+        #{dispatchvehicles,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.hexagonsi.event.model.OdAgencyEvent" >
+    update od_agencyevent
+    <set >
+      <if test="agencyeventdesc != null" >
+        agencyeventdesc = #{agencyeventdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyeventsubtypecode != null" >
+        agencyeventsubtypecode = #{agencyeventsubtypecode,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyeventsubtypecodedesc != null" >
+        agencyeventsubtypecodedesc = #{agencyeventsubtypecodedesc,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyeventtypecode != null" >
+        agencyeventtypecode = #{agencyeventtypecode,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyeventtypecodedesc != null" >
+        agencyeventtypecodedesc = #{agencyeventtypecodedesc,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyid != null" >
+        agencyId = #{agencyid,jdbcType=VARCHAR},
+      </if>
+      <if test="addedtime != null" >
+        addedtime = #{addedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alarmlevel != null" >
+        alarmlevel = #{alarmlevel,jdbcType=INTEGER},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="longitude != null" >
+        longitude = #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="createdtime != null" >
+        createdtime = #{createdtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdterminal != null" >
+        createdterminal = #{createdterminal,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedtime != null" >
+        updatedtime = #{updatedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedterminal != null" >
+        updatedterminal = #{updatedterminal,jdbcType=VARCHAR},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closingterminal != null" >
+        closingterminal = #{closingterminal,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchgroup != null" >
+        dispatchgroup = #{dispatchgroup,jdbcType=VARCHAR},
+      </if>
+      <if test="callername != null" >
+        callername = #{callername,jdbcType=VARCHAR},
+      </if>
+      <if test="callerphone != null" >
+        callerphone = #{callerphone,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchvehicles != null" >
+        dispatchvehicles = #{dispatchvehicles,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where agencyeventid = #{agencyeventid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.hexagonsi.event.model.OdAgencyEvent" >
+    update od_agencyevent
+    set agencyeventdesc = #{agencyeventdesc,jdbcType=VARCHAR},
+      agencyeventsubtypecode = #{agencyeventsubtypecode,jdbcType=VARCHAR},
+      agencyeventsubtypecodedesc = #{agencyeventsubtypecodedesc,jdbcType=VARCHAR},
+      agencyeventtypecode = #{agencyeventtypecode,jdbcType=VARCHAR},
+      agencyeventtypecodedesc = #{agencyeventtypecodedesc,jdbcType=VARCHAR},
+      agencyId = #{agencyid,jdbcType=VARCHAR},
+      addedtime = #{addedtime,jdbcType=TIMESTAMP},
+      alarmlevel = #{alarmlevel,jdbcType=INTEGER},
+      latitude = #{latitude,jdbcType=DOUBLE},
+      longitude = #{longitude,jdbcType=DOUBLE},
+      location = #{location,jdbcType=VARCHAR},
+      createdtime = #{createdtime,jdbcType=TIMESTAMP},
+      createdterminal = #{createdterminal,jdbcType=VARCHAR},
+      updatedtime = #{updatedtime,jdbcType=TIMESTAMP},
+      updatedterminal = #{updatedterminal,jdbcType=VARCHAR},
+      closetime = #{closetime,jdbcType=TIMESTAMP},
+      closingterminal = #{closingterminal,jdbcType=VARCHAR},
+      dispatchgroup = #{dispatchgroup,jdbcType=VARCHAR},
+      callername = #{callername,jdbcType=VARCHAR},
+      callerphone = #{callerphone,jdbcType=VARCHAR},
+      dispatchvehicles = #{dispatchvehicles,jdbcType=VARCHAR}
+    where agencyeventid = #{agencyeventid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: eventservice
+  datasource:
+    url: jdbc:mysql://${mysql.connectstring}/onemapdb?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
+    schema: classpath*:db/schema.sql
+    username: ${mysql.user}
+    password: ${mysql.password}
+    data: classpath*:db/data.sql
+    initialization-mode: never
+    platform: mysql
+    sql-script-encoding: utf-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+eureka:
+  instance:
+    instance-id: ${server.host}:${server.port}
+    preferIpAddress: true
+    ipAddress: ${server.host}
+    leaseRenewalIntervalInSeconds: 30
+    leaseExpirationDurationInSeconds: 90
+  client:
+    service-url:
+      defaultZone: http://${eureka.host}:8761/eureka/
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: org.hexagonsi.event.model
+
+#page helper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  row-bounds-with-count: true
+
+event:
+  default:
+    offsetDay: 0
+    dispatchGroupNames: 丹阳中队,谷阳中队,特勤中队,七里甸中队,大港中队,谏壁中队,云阳中队
