@@ -42,3 +42,9 @@ event:
   default:
     offsetDay: 0
     dispatchGroupNames: 丹阳中队,谷阳中队,特勤中队,七里甸中队,大港中队,谏壁中队,云阳中队
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream

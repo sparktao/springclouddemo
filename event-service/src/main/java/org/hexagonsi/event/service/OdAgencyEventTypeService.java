@@ -7,6 +7,7 @@ import java.util.List;
 public interface OdAgencyEventTypeService {
 
     List<OdAgencyEventType> selectAll();
+    List<OdAgencyEventType> selectAllFallback();
 
     OdAgencyEventType selectById(int id);
 

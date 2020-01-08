@@ -26,8 +26,8 @@ services:
       - "8071:8071"
     depends_on:
       - eureka
-  zuul:
-    build: ./zuul
+  gateway:
+    build: ./gateway
     ports:
       - "5555:5555"
     depends_on:
