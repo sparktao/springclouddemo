@@ -7,6 +7,7 @@
 5. docker 部署支持,添加docker-compose.yml和每个工程的Dockfile
 6. order引入了申明式Feign调用Product方法
 7. 添加Spring Cloud Gateway作为网关，注册order, product, event服务
+8. 添加ELK(Elasticsearch+Kibana+Logstash)日志的支撑
 
 启动
 docker-compose up
