@@ -47,3 +47,6 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
         loggerLevel: basic
+
+logging:
+  config: classpath:config/logback-spring.xml

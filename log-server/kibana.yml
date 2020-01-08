@@ -1,0 +1,2 @@
+elasticsearch:
+    hosts: http://10.0.11.134:9200

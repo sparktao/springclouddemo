@@ -11,6 +11,10 @@ spring:
     platform: mysql
     sql-script-encoding: utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
 
 eureka:
   instance:

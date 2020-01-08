@@ -2,6 +2,7 @@ package org.hexagonsi.event.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hexagonsi.event.controller.viewmodel.ReturnResult;
+import org.hexagonsi.event.future.AgencyEventTypeFuture;
 import org.hexagonsi.event.model.OdAgencyEventType;
 import org.hexagonsi.event.service.OdAgencyEventTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RestController
@@ -20,11 +22,20 @@ public class AgencyEventTypeController {
     @Autowired
     private OdAgencyEventTypeService agentEventTypeService;
 
+    @Autowired
+    private AgencyEventTypeFuture eventTypeFuture;
+
     @GetMapping
     public ResponseEntity<EventTypeResult> selectAll() {
         log.info("select all agency event types.");
         List<OdAgencyEventType> ls = agentEventTypeService.selectAll();
         return new ResponseEntity<>(new EventTypeResult(ls, HttpStatus.OK.value()), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/list")
+    public CompletableFuture<ResponseEntity<EventTypeResult>> selectAllFuture() {
+        log.info("select all agency event types.");
+        return eventTypeFuture.selectAll().thenApply(ls -> new ResponseEntity<>(new EventTypeResult(ls, HttpStatus.OK.value()), HttpStatus.OK));
     }
 
     @PostMapping
