@@ -1,0 +1,6 @@
+server.port=8071;
+eureka.instance.hostname=localhost;
+mysql.connectstring=10.0.11.134:3306;
+mysql.user=root;
+mysql.password=root;
+server.host=localhost;
